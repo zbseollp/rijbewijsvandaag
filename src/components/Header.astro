@@ -1,0 +1,62 @@
+---
+import Container from "@components/Container.astro";
+import { SITE } from "@lib/site";
+const path = new URL(Astro.request.url).pathname;
+const isActive = (href: string) => href === "/" ? path === "/" : path.startsWith(href);
+---
+<header
+  data-header
+  class="sticky top-0 z-50 border-b border-transparent transition-colors duration-300"
+>
+  <Container class="flex h-16 items-center justify-between md:h-20">
+    <a href="/" class="flex items-center gap-2 font-display text-xl font-extrabold tracking-tight text-slate-900">
+      <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-brand-600 text-white">A</span>
+      <span>Autotheorie<span class="text-brand-600">oefenen</span></span>
+    </a>
+
+    <nav class="hidden items-center gap-1 lg:flex" aria-label="Hoofdmenu">
+      {SITE.nav.map((item) => (
+        <a
+          href={item.href}
+          class:list={[
+            "rounded-lg px-3 py-2 text-sm font-medium transition hover:text-brand-700",
+            isActive(item.href) ? "text-brand-700" : "text-slate-700",
+          ]}
+        >{item.label}</a>
+      ))}
+    </nav>
+
+    <button
+      data-menu-toggle
+      class="inline-flex items-center justify-center rounded-lg p-2 text-slate-700 lg:hidden"
+      aria-label="Menu openen" aria-expanded="false"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </Container>
+
+  <div data-mobile-menu class="hidden border-t border-slate-200 bg-white lg:hidden">
+    <Container class="flex flex-col py-3">
+      {SITE.nav.map((item) => (
+        <a href={item.href} class="rounded-lg px-3 py-2 text-base font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-700">{item.label}</a>
+      ))}
+    </Container>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector("[data-header]");
+  const onScroll = () => {
+    if (window.scrollY > 8) header?.classList.add("bg-white/90", "backdrop-blur", "border-slate-200", "shadow-sm");
+    else header?.classList.remove("bg-white/90", "backdrop-blur", "border-slate-200", "shadow-sm");
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  const toggle = document.querySelector("[data-menu-toggle]");
+  const menu = document.querySelector("[data-mobile-menu]");
+  toggle?.addEventListener("click", () => {
+    const open = menu?.classList.toggle("hidden") === false;
+    toggle.setAttribute("aria-expanded", String(open));
+  });
+</script>

@@ -1,0 +1,39 @@
+---
+import type { Post } from "@lib/posts";
+import { displayTitle, displayDescription, formatDate } from "@lib/posts";
+interface Props { post: Post; eager?: boolean }
+const { post, eager = false } = Astro.props;
+const { featuredImage, featuredImageAlt, date } = post.data;
+const title = displayTitle(post);
+const desc = displayDescription(post);
+const href = `/${post.id}/`;
+---
+<article class="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:-translate-y-0.5 hover:shadow-lg">
+  <a href={href} class="block overflow-hidden bg-slate-100" aria-label={title}>
+    {featuredImage ? (
+      <img
+        src={featuredImage}
+        alt={featuredImageAlt || title}
+        width="640" height="360"
+        loading={eager ? "eager" : "lazy"}
+        decoding={eager ? "sync" : "async"}
+        class="aspect-video w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+      />
+    ) : (
+      <div class="relative flex aspect-video w-full items-center justify-center bg-gradient-to-br from-brand-600 to-brand-400">
+        <span class="font-display text-2xl font-extrabold tracking-tight text-white/90">
+          Autotheorie<span class="text-white">oefenen</span>
+        </span>
+        <span class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.18),transparent_60%)]"></span>
+      </div>
+    )}
+  </a>
+  <div class="flex flex-1 flex-col p-5">
+    <time datetime={date.toISOString()} class="text-xs font-medium text-slate-500">{formatDate(date)}</time>
+    <h2 class="mt-2 text-lg font-bold leading-snug text-slate-900">
+      <a href={href} class="hover:text-brand-700">{title}</a>
+    </h2>
+    {desc && <p class="mt-2 line-clamp-3 text-sm text-slate-600">{desc}</p>}
+    <span class="mt-4 inline-flex text-sm font-semibold text-brand-700">Lees verder →</span>
+  </div>
+</article>

@@ -1,0 +1,123 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Container from "@components/Container.astro";
+import Button from "@components/Button.astro";
+import BlogPostCard from "@components/BlogPostCard.astro";
+import { getRecentPosts } from "@lib/posts";
+import { SITE } from "@lib/site";
+import signsRaw from "../data/signs.json";
+
+const recent = await getRecentPosts(6);
+const heroSigns = (signsRaw as { id: string; name: string }[])
+  .filter((s) => s.name && s.name.toLowerCase() !== "bord").slice(0, 9);
+
+const topics = [
+  { title: "Verkeersborden oefenen", desc: "Test in 20 vragen of jij alle borden kent.", href: "/verkeersborden-oefenen/", cta: "Start de quiz" },
+  { title: "Alle verkeersborden", desc: "Compleet overzicht van alle Nederlandse borden.", href: "/alle-verkeersborden/", cta: "Bekijk overzicht" },
+  { title: "Voorrangsregels", desc: "Alles over voorrang, kruispunten en haaientanden.", href: "/voorrangsregels/", cta: "Lees uitleg" },
+  { title: "Motor theorie", desc: "Oefen specifiek voor je motortheorie-examen.", href: "/motor-theorie/", cta: "Naar motor theorie" },
+];
+
+const stats = [
+  { value: "160", label: "Verkeersborden" },
+  { value: "100%", label: "Gratis oefenen" },
+  { value: "161.632+", label: "Toetsen gemaakt" },
+];
+
+const jsonld = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "Organization", "@id": `${SITE.url}/#org`, name: SITE.name, url: SITE.url },
+    { "@type": "WebSite", "@id": `${SITE.url}/#website`, url: SITE.url, name: SITE.name, publisher: { "@id": `${SITE.url}/#org` }, inLanguage: "nl-NL" },
+  ],
+};
+---
+<BaseLayout
+  title="Theorie examen oefenen? Gratis & online | Autotheorieoefenen"
+  description={SITE.description}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonld)} is:inline />
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden -mt-16 pt-16 md:-mt-20 md:pt-20 bg-[linear-gradient(180deg,var(--color-brand-50)_0%,#fff_72%)]">
+    <Container class="grid items-center gap-10 py-(--spacing-section) lg:grid-cols-2">
+      <div>
+        <span class="inline-flex items-center rounded-full bg-brand-100 px-3 py-1 text-sm font-semibold text-brand-800">Gratis · CBR theorie 2026</span>
+        <h1 class="mt-5 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
+          Theorie-examen oefenen?<br /><span class="text-brand-600">Wij helpen je slagen.</span>
+        </h1>
+        <p class="mt-5 max-w-xl text-lg text-slate-600">
+          Oefen gratis met verkeersborden, voorrangsregels en alle onderwerpen van het
+          CBR theorie-examen. Direct beginnen, geen account nodig.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <Button href="/verkeersborden-oefenen/" variant="primary">Start met oefenen</Button>
+          <Button href="/alle-verkeersborden/" variant="secondary">Bekijk alle borden</Button>
+        </div>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-xl">
+        <div class="grid grid-cols-3 gap-3">
+          {heroSigns.map((s, i) => (
+            <img src={`/assets/images/signs/${s.id}.png`} alt={s.name}
+                 width="120" height="120" loading={i < 3 ? "eager" : "lazy"} decoding="async"
+                 class="aspect-square w-full rounded-lg border border-slate-100 bg-white object-contain p-1.5" />
+          ))}
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Stats -->
+  <section class="border-y border-slate-200 bg-slate-50">
+    <Container class="grid grid-cols-3 gap-4 py-8 text-center">
+      {stats.map((s) => (
+        <div>
+          <div class="text-2xl font-extrabold text-brand-700 sm:text-3xl">{s.value}</div>
+          <div class="mt-1 text-sm text-slate-600">{s.label}</div>
+        </div>
+      ))}
+    </Container>
+  </section>
+
+  <!-- Featured topics -->
+  <section>
+    <Container class="py-(--spacing-section)">
+      <h2 class="text-3xl font-extrabold tracking-tight text-slate-900">Waar wil je mee oefenen?</h2>
+      <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {topics.map((t) => (
+          <a href={t.href} class="group flex flex-col rounded-2xl border border-slate-200 bg-white p-6 transition hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-lg">
+            <h3 class="text-lg font-bold text-slate-900 group-hover:text-brand-700">{t.title}</h3>
+            <p class="mt-2 flex-1 text-sm text-slate-600">{t.desc}</p>
+            <span class="mt-4 text-sm font-semibold text-brand-700">{t.cta} →</span>
+          </a>
+        ))}
+      </div>
+    </Container>
+  </section>
+
+  <!-- CTA band -->
+  <section class="bg-brand-700">
+    <Container class="flex flex-col items-center justify-between gap-5 py-12 text-center sm:flex-row sm:text-left">
+      <div>
+        <h2 class="text-2xl font-extrabold text-white">Klaar om te oefenen?</h2>
+        <p class="mt-1 text-brand-50">Begin nu gratis met de verkeersbordenquiz — 20 vragen.</p>
+      </div>
+      <a href="/verkeersborden-oefenen/" class="inline-flex shrink-0 items-center rounded-xl bg-white px-6 py-3 font-semibold text-brand-700 transition hover:bg-brand-50">Start de quiz</a>
+    </Container>
+  </section>
+
+  <!-- Latest from the blog -->
+  {recent.length > 0 && (
+    <section>
+      <Container class="py-(--spacing-section)">
+        <div class="flex items-end justify-between">
+          <h2 class="text-3xl font-extrabold tracking-tight text-slate-900">Laatste uit de blog</h2>
+          <a href="/blog/" class="text-sm font-semibold text-brand-700 hover:underline">Alle artikelen →</a>
+        </div>
+        <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {recent.map((p, i) => <BlogPostCard post={p} eager={i === 0} />)}
+        </div>
+      </Container>
+    </section>
+  )}
+</BaseLayout>
