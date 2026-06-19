@@ -10,11 +10,11 @@ const recent = (await getRecentPosts(4)).map((p) => ({ slug: p.id, title: displa
     <div class="md:col-span-4">
       <div class="flex items-center gap-2 font-display text-lg font-extrabold text-slate-900">
         <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 text-white">A</span>
-        Autotheorie<span class="text-brand-600">oefenen</span>
+        {SITE.name}
       </div>
       <p class="mt-3 max-w-sm text-sm text-slate-600">
         {SITE.name} biedt gratis online oefenmateriaal voor je CBR theorie-examen:
-        verkeersborden, voorrangsregels en meer.
+        het CBR theorie-examen. Gratis oefenmateriaal voor auto, scooter en motor.
       </p>
     </div>
 
