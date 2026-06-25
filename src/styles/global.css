@@ -12,29 +12,29 @@
 }
 
 @theme {
-  /* Brand — autotheorieoefenen orange (#F65900), tuned to a full scale.
-     brand-700 is the AA-safe step for white text / CTAs. */
-  --color-brand-50: #fff4ec;
-  --color-brand-100: #ffe6d3;
-  --color-brand-200: #ffc9a6;
-  --color-brand-300: #ffa46e;
-  --color-brand-400: #fd7a36;
-  --color-brand-500: #f65900;
-  --color-brand-600: #db4d00;
-  --color-brand-700: #b03b06;
-  --color-brand-800: #8c300c;
-  --color-brand-900: #722a0e;
-  --color-brand-950: #3e1304;
+  /* Brand — rood/oranje urgentie */
+  --color-brand-50: #fff7ed;
+  --color-brand-100: #ffedd5;
+  --color-brand-200: #fed7aa;
+  --color-brand-300: #fdba74;
+  --color-brand-400: #fb923c;
+  --color-brand-500: #f97316;
+  --color-brand-600: #ea580c;
+  --color-brand-700: #c2410c;
+  --color-brand-800: #9a3412;
+  --color-brand-900: #7c2d12;
+  --color-brand-950: #431407;
 
-  /* Trust accent (CBR/road-sign blue) for secondary highlights */
-  --color-accent-50: #eff6ff;
-  --color-accent-100: #dbeafe;
-  --color-accent-500: #2563eb;
-  --color-accent-600: #1d4ed8;
-  --color-accent-700: #1e40af;
+  /* Red accent */
+  --color-accent-50: #fef2f2;
+  --color-accent-100: #fee2e2;
+  --color-accent-500: #ef4444;
+  --color-accent-600: #dc2626;
+  --color-accent-700: #b91c1c;
 
   --font-sans: "Inter Variable", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Inter Variable", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Inter Variable", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
 
   --spacing-section: clamp(2.5rem, 4.5vw, 5rem);
 }
@@ -55,9 +55,8 @@
     text-rendering: optimizeLegibility;
   }
   h1, h2, h3, h4 {
-    font-family: var(--font-display);
-    font-weight: 800;
-    letter-spacing: -0.02em;
+    font-weight: 700;
+    letter-spacing: -0.01em;
     color: var(--color-slate-900);
     text-wrap: balance;
   }

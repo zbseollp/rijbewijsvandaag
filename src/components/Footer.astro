@@ -5,60 +5,69 @@ import { SITE } from "@lib/site";
 import { getRecentPosts, displayTitle } from "@lib/posts";
 const recent = (await getRecentPosts(4)).map((p) => ({ slug: p.id, title: displayTitle(p) }));
 ---
-<footer class="mt-(--spacing-section) border-t border-slate-200 bg-slate-50">
-  <Container class="grid gap-10 py-12 md:grid-cols-12">
-    <div class="md:col-span-4">
-      <div class="flex items-center gap-2 font-display text-lg font-extrabold text-slate-900">
-        <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 text-white">A</span>
-        {SITE.name}
+<footer class="mt-(--spacing-section) bg-gray-900 text-gray-300">
+  <Container class="py-12">
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+
+      <!-- Merk -->
+      <div class="lg:col-span-1">
+        <div class="flex items-center gap-2.5 mb-4">
+          <div class="w-8 h-8 flex items-center justify-center shrink-0 rotate-45 overflow-hidden rounded-lg bg-red-600">
+            <span class="text-white font-black text-base leading-none -rotate-45">R</span>
+          </div>
+          <span class="font-black text-white text-base tracking-tight">RijbewijsVandaag</span>
+        </div>
+        <p class="text-sm text-gray-400 leading-relaxed">Alles voor je rijbewijs — snel, praktisch en gratis. Haal je B rijbewijs zo snel mogelijk.</p>
       </div>
-      <p class="mt-3 max-w-sm text-sm text-slate-600">
-        {SITE.name} biedt gratis online oefenmateriaal voor je CBR theorie-examen:
-        het CBR theorie-examen. Gratis oefenmateriaal voor auto, scooter en motor.
-      </p>
-    </div>
 
-    <div class="md:col-span-2">
-      <h3 class="text-sm font-semibold text-slate-900">Oefenen</h3>
-      <ul class="mt-3 space-y-2 text-sm text-slate-600">
-        {SITE.nav.map((i) => (
-          <li><a class="hover:text-brand-700" href={i.href}>{i.label}</a></li>
-        ))}
-      </ul>
-    </div>
+      <!-- Recente artikelen -->
+      <div class="lg:col-span-1">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-red-400 mb-4">Recente artikelen</h3>
+        <ul class="space-y-2.5">
+          {recent.map((p) => (
+            <li>
+              <a href={`/${p.slug}/`} class="text-sm text-gray-300 hover:text-white transition-colors line-clamp-2 leading-snug">{p.title}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-    <div class="md:col-span-2">
-      <h3 class="text-sm font-semibold text-slate-900">Populair</h3>
-      <ul class="mt-3 space-y-2 text-sm text-slate-600">
-        {SITE.popular.map((i) => (
-          <li><a class="hover:text-brand-700" href={i.href}>{i.label}</a></li>
-        ))}
-      </ul>
-    </div>
+      <!-- Navigatie -->
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-red-400 mb-4">Navigatie</h3>
+        <ul class="space-y-2">
+          {SITE.nav.map((i) => (
+            <li><a href={i.href} class="text-sm text-gray-300 hover:text-white transition-colors">{i.label}</a></li>
+          ))}
+          <li><a href="/sitemap/" class="text-sm text-gray-300 hover:text-white transition-colors">Sitemap</a></li>
+        </ul>
+      </div>
 
-    <div class="md:col-span-2">
-      <h3 class="text-sm font-semibold text-slate-900">Info</h3>
-      <ul class="mt-3 space-y-2 text-sm text-slate-600">
-        <li><a class="hover:text-brand-700" href="/over-ons/">Over ons</a></li>
-        <li><a class="hover:text-brand-700" href="/contact/">Contact</a></li>
-        <li><a class="hover:text-brand-700" href="/sitemap/">Sitemap</a></li>
-      </ul>
-    </div>
-
-    <div class="md:col-span-2">
-      <h3 class="text-sm font-semibold text-slate-900">Recente artikelen</h3>
-      <ul class="mt-3 space-y-2 text-sm text-slate-600">
-        {recent.map((p) => (
-          <li><a class="hover:text-brand-700" href={`/${p.slug}/`}>{p.title}</a></li>
-        ))}
-      </ul>
+      <!-- CTA -->
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-red-400 mb-4">Direct starten</h3>
+        <div class="flex flex-col gap-2">
+          <a href="/blog/" class="flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-red-500 transition-colors">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            Start met leren
+          </a>
+          <a href="/rijbewijs-halen/" class="flex items-center gap-2 rounded-lg bg-gray-800 px-4 py-2.5 text-sm font-semibold text-gray-100 hover:bg-gray-700 transition-colors">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            Rijbewijs halen
+          </a>
+        </div>
+      </div>
     </div>
   </Container>
 
-  <div class="border-t border-slate-200 py-5">
-    <Container class="flex flex-col items-center justify-between gap-2 text-sm text-slate-500 sm:flex-row">
-      <p>© <CurrentYear />&nbsp;{SITE.name}. Alle rechten voorbehouden.</p>
-      <p>Gemaakt om je te laten slagen.</p>
+  <div class="border-t border-gray-800">
+    <Container class="flex flex-col items-center justify-between gap-2 py-4 text-xs text-gray-500 sm:flex-row">
+      <p>© <CurrentYear /> {SITE.name} · Alle rechten voorbehouden</p>
+      <div class="flex gap-4">
+        <a href="/over-ons/" class="hover:text-gray-300 transition-colors">Over ons</a>
+        <a href="/contact/" class="hover:text-gray-300 transition-colors">Contact</a>
+        <a href="/privacy-policy/" class="hover:text-gray-300 transition-colors">Privacy</a>
+      </div>
     </Container>
   </div>
 </footer>

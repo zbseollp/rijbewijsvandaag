@@ -1,11 +1,11 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import Container from "@components/Container.astro";
-const ACCESS_KEY = import.meta.env.WEB3FORMS_ACCESS_KEY || "8ea4e1a2-67ac-4af4-a4f3-f65d5ae539e1";
+const ACCESS_KEY = import.meta.env.WEB3FORMS_ACCESS_KEY || "4a9ea2ec-65de-4195-9a8c-ddcfb373975d";
 ---
 <BaseLayout
-  title="Contact | Autotheorieoefenen"
-  description="Vragen, tips of feedback over Autotheorieoefenen? Neem contact met ons op via het formulier."
+  title="Contact | AutoTheorieGratisOefenen"
+  description="Vragen, tips of feedback over AutoTheorieGratisOefenen? Neem contact met ons op via het formulier."
 >
   <section class="bg-[linear-gradient(180deg,var(--color-brand-50)_0%,#fff_60%)]">
     <Container class="max-w-2xl py-(--spacing-section)">
@@ -17,8 +17,8 @@ const ACCESS_KEY = import.meta.env.WEB3FORMS_ACCESS_KEY || "8ea4e1a2-67ac-4af4-a
   <Container class="max-w-2xl pb-(--spacing-section)">
     <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" class="space-y-5 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
       <input type="hidden" name="access_key" value={ACCESS_KEY} />
-      <input type="hidden" name="subject" value="Nieuw bericht via Rijbewijs Vandaag" />
-      <input type="hidden" name="from_name" value="Rijbewijs Vandaag" />
+      <input type="hidden" name="subject" value="Nieuw bericht via AutoTheorieGratisOefenen" />
+      <input type="hidden" name="from_name" value="AutoTheorieGratisOefenen" />
       <input type="hidden" name="redirect" data-redirect value="https://autotheorieoefenen.com/contact/thanks/" />
       <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
 

@@ -1,4 +1,4 @@
-import { defineConfig } from "astro/config";
+﻿import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
 import compress from "astro-compress";
@@ -20,7 +20,7 @@ function remarkStripLeadingImage() {
 }
 
 export default defineConfig({
-  site: "https://rijbewijsvandaag.nl",
+  site: "https://autotheoriegratisoefenen.nl",
   output: "static",
   trailingSlash: "always",
   build: { format: "directory" },

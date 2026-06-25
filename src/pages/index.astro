@@ -1,123 +1,181 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import Container from "@components/Container.astro";
-import Button from "@components/Button.astro";
 import BlogPostCard from "@components/BlogPostCard.astro";
-import { getRecentPosts } from "@lib/posts";
+import { getRecentPosts, displayTitle } from "@lib/posts";
 import { SITE } from "@lib/site";
-import signsRaw from "../data/signs.json";
 
-const recent = await getRecentPosts(6);
-const heroSigns = (signsRaw as { id: string; name: string }[])
-  .filter((s) => s.name && s.name.toLowerCase() !== "bord").slice(0, 9);
+const posts = await getRecentPosts(8);
+const heroPosts = posts.slice(0, 6);
 
-const topics = [
-  { title: "Verkeersborden oefenen", desc: "Test in 20 vragen of jij alle borden kent.", href: "/verkeersborden-oefenen/", cta: "Start de quiz" },
-  { title: "Alle verkeersborden", desc: "Compleet overzicht van alle Nederlandse borden.", href: "/alle-verkeersborden/", cta: "Bekijk overzicht" },
-  { title: "Voorrangsregels", desc: "Alles over voorrang, kruispunten en haaientanden.", href: "/voorrangsregels/", cta: "Lees uitleg" },
-  { title: "Motor theorie", desc: "Oefen specifiek voor je motortheorie-examen.", href: "/motor-theorie/", cta: "Naar motor theorie" },
+const steps = [
+  { num: "1", title: "Lees de theorie", desc: "Begrip van de regels is de basis. Onze artikelen leggen alles begrijpelijk uit." },
+  { num: "2", title: "Oefen de stof", desc: "Verken alle CBR-onderwerpen: voorrang, gevaarherkenning, borden en meer." },
+  { num: "3", title: "Haal je examen", desc: "Goed voorbereid naar het CBR. Slaag in één keer voor je theorie-examen." },
 ];
 
 const stats = [
-  { value: "160", label: "Verkeersborden" },
-  { value: "100%", label: "Gratis oefenen" },
-  { value: "161.632+", label: "Toetsen gemaakt" },
+  { val: "65", label: "Examensvragen" },
+  { val: "77%", label: "Slagingsdrempel" },
+  { val: "30 min", label: "Examenduur" },
+  { val: "Gratis", label: "Altijd" },
 ];
 
-const jsonld = {
-  "@context": "https://schema.org",
-  "@graph": [
-    { "@type": "Organization", "@id": `${SITE.url}/#org`, name: SITE.name, url: SITE.url },
-    { "@type": "WebSite", "@id": `${SITE.url}/#website`, url: SITE.url, name: SITE.name, publisher: { "@id": `${SITE.url}/#org` }, inLanguage: "nl-NL" },
-  ],
-};
+const faq = [
+  { q: "Hoeveel vragen heeft het CBR theorie-examen?", a: "Het theorie-examen bestaat uit 65 meerkeuzevragen. Je moet er minimaal 50 goed hebben (77%) om te slagen." },
+  { q: "Hoe lang duurt het theorie-examen?", a: "Je krijgt 30 minuten de tijd voor het examen. Gemiddeld zijn kandidaten er zo'n 20 minuten mee bezig." },
+  { q: "Hoe snel kan ik mijn rijbewijs halen?", a: "Met goede voorbereiding kun je de theorie al na een paar weken doen. De praktijk duurt gemiddeld 3 tot 6 maanden." },
+  { q: "Wat zijn de vaakste fouten bij het theorie-examen?", a: "Gevaarherkenning en voorrangsregels zijn de moeilijkste onderdelen. Onze artikelen geven gerichte tips." },
+  { q: "Moet ik betalen voor de artikelen op deze site?", a: "Nee, alles is gratis toegankelijk. Geen account, geen abonnement." },
+  { q: "Hoe werkt voorrang in het verkeer?", a: "In Nederland geldt 'rechts heeft voorrang' tenzij anders aangegeven. Lees onze theorie-uitleg voor alle uitzonderingen." },
+];
 ---
-<BaseLayout
-  title="Theorie examen oefenen? Gratis & online | Autotheorieoefenen"
-  description={SITE.description}
->
-  <script type="application/ld+json" set:html={JSON.stringify(jsonld)} is:inline />
+<BaseLayout title={`Haal je rijbewijs vandaag — ${SITE.name}`} description={SITE.description}>
 
-  <!-- Hero -->
-  <section class="relative overflow-hidden -mt-16 pt-16 md:-mt-20 md:pt-20 bg-[linear-gradient(180deg,var(--color-brand-50)_0%,#fff_72%)]">
-    <Container class="grid items-center gap-10 py-(--spacing-section) lg:grid-cols-2">
-      <div>
-        <span class="inline-flex items-center rounded-full bg-brand-100 px-3 py-1 text-sm font-semibold text-brand-800">Gratis · CBR theorie 2026</span>
-        <h1 class="mt-5 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
-          Theorie-examen oefenen?<br /><span class="text-brand-600">Wij helpen je slagen.</span>
-        </h1>
-        <p class="mt-5 max-w-xl text-lg text-slate-600">
-          Oefen gratis met verkeersborden, voorrangsregels en alle onderwerpen van het
-          CBR theorie-examen. Direct beginnen, geen account nodig.
-        </p>
-        <div class="mt-8 flex flex-wrap gap-3">
-          <Button href="/verkeersborden-oefenen/" variant="primary">Start met oefenen</Button>
-          <Button href="/alle-verkeersborden/" variant="secondary">Bekijk alle borden</Button>
+  <!-- HERO: dark split layout with steering wheel SVG -->
+  <section class="bg-gray-900 text-white overflow-hidden">
+    <Container class="py-14 lg:py-20">
+      <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+
+        <!-- Left: tekst -->
+        <div>
+          <div class="inline-flex items-center gap-2 rounded-full bg-red-600/20 border border-red-500/30 px-3 py-1 text-xs font-bold text-red-300 mb-6 uppercase tracking-wider">
+            Gratis · Geen account nodig
+          </div>
+          <h1 class="text-4xl font-black tracking-tight leading-tight sm:text-5xl lg:text-6xl">
+            Haal je<br/>
+            <span class="text-red-500">rijbewijs</span><br/>
+            <span class="text-orange-400">vandaag nog</span>
+          </h1>
+          <p class="mt-5 text-lg text-gray-300 leading-relaxed max-w-lg">
+            Praktische theorie-uitleg, tips voor het CBR-examen en alles wat je nodig hebt voor rijbewijs B — gratis en direct beschikbaar.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="/blog/" class="inline-flex items-center gap-2 rounded-lg bg-red-600 px-7 py-3.5 text-sm font-bold text-white hover:bg-red-700 transition-colors shadow-lg shadow-red-900/40">
+              Direct starten <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="/theorie-uitleg/" class="inline-flex items-center gap-2 rounded-lg border border-gray-600 px-7 py-3.5 text-sm font-semibold text-gray-200 hover:border-orange-400 hover:text-orange-300 transition-colors">
+              Theorie uitleg
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: steering wheel SVG -->
+        <div class="hidden lg:flex items-center justify-center">
+          <svg width="320" height="320" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- Outer ring -->
+            <circle cx="160" cy="160" r="148" stroke="#dc2626" stroke-width="16" fill="none" opacity="0.9"/>
+            <!-- Inner ring -->
+            <circle cx="160" cy="160" r="112" stroke="#991b1b" stroke-width="6" fill="none" opacity="0.5"/>
+            <!-- Center hub -->
+            <circle cx="160" cy="160" r="36" fill="#dc2626"/>
+            <circle cx="160" cy="160" r="24" fill="#991b1b"/>
+            <!-- Spokes -->
+            <line x1="160" y1="124" x2="160" y2="48" stroke="#dc2626" stroke-width="14" stroke-linecap="round"/>
+            <line x1="186" y1="131" x2="232" y2="72" stroke="#dc2626" stroke-width="14" stroke-linecap="round"/>
+            <line x1="134" y1="131" x2="88" y2="72" stroke="#dc2626" stroke-width="14" stroke-linecap="round"/>
+            <line x1="160" y1="196" x2="120" y2="272" stroke="#dc2626" stroke-width="14" stroke-linecap="round"/>
+            <line x1="160" y1="196" x2="200" y2="272" stroke="#dc2626" stroke-width="14" stroke-linecap="round"/>
+            <!-- Glow effect -->
+            <circle cx="160" cy="160" r="148" stroke="#f97316" stroke-width="2" fill="none" opacity="0.3"/>
+            <!-- "B" rijbewijs badge -->
+            <rect x="126" y="126" width="68" height="68" rx="8" fill="#1c1917" opacity="0.0"/>
+            <text x="160" y="168" font-family="Arial Black,sans-serif" font-size="26" font-weight="900" fill="white" text-anchor="middle">B</text>
+          </svg>
         </div>
       </div>
-      <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-xl">
-        <div class="grid grid-cols-3 gap-3">
-          {heroSigns.map((s, i) => (
-            <img src={`/assets/images/signs/${s.id}.png`} alt={s.name}
-                 width="120" height="120" loading={i < 3 ? "eager" : "lazy"} decoding="async"
-                 class="aspect-square w-full rounded-lg border border-slate-100 bg-white object-contain p-1.5" />
+    </Container>
+  </section>
+
+  <!-- STATS BAND -->
+  <section class="bg-red-600">
+    <Container class="py-5">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center text-white">
+        {stats.map((s) => (
+          <div>
+            <div class="text-2xl font-black">{s.val}</div>
+            <div class="text-xs text-red-100 font-medium mt-0.5">{s.label}</div>
+          </div>
+        ))}
+      </div>
+    </Container>
+  </section>
+
+  <!-- 3 STAPPEN -->
+  <section class="bg-white border-b border-gray-100">
+    <Container class="py-(--spacing-section)">
+      <div class="text-center mb-10">
+        <h2 class="text-2xl font-extrabold text-slate-900">In 3 stappen naar je rijbewijs</h2>
+        <p class="mt-2 text-slate-500 text-sm">Volg dit plan en je bent goed voorbereid op het CBR-examen</p>
+      </div>
+      <div class="grid gap-6 sm:grid-cols-3">
+        {steps.map((s, i) => (
+          <div class="relative flex gap-4 items-start p-5 rounded-xl border border-gray-100 bg-gray-50">
+            <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-red-600 text-white text-sm font-black shadow-sm shadow-red-200">{s.num}</span>
+            <div>
+              <h3 class="font-bold text-slate-900 mb-1">{s.title}</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">{s.desc}</p>
+            </div>
+            {i < 2 && (
+              <svg class="absolute -right-4 top-8 hidden sm:block" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.5" opacity="0.4"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            )}
+          </div>
+        ))}
+      </div>
+    </Container>
+  </section>
+
+  <!-- BLOG POSTS: lijst-stijl met 2 kolommen -->
+  <section class="bg-white">
+    <Container class="py-(--spacing-section)">
+      <div class="flex items-center justify-between mb-7">
+        <h2 class="text-2xl font-extrabold text-slate-900">Theorie & tips</h2>
+        <a href="/blog/" class="text-sm font-bold text-red-600 hover:underline inline-flex items-center gap-1">
+          Alle artikelen <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {heroPosts.map((p, i) => <BlogPostCard post={p} eager={i === 0} />)}
+      </div>
+      <div class="mt-8 text-center">
+        <a href="/blog/" class="inline-flex items-center gap-2 rounded-lg border-2 border-red-200 bg-red-50 px-6 py-3 text-sm font-bold text-red-700 hover:bg-red-100 hover:border-red-300 transition-colors">
+          Bekijk alle artikelen →
+        </a>
+      </div>
+    </Container>
+  </section>
+
+  <!-- FAQ -->
+  <section class="bg-orange-50 border-t border-orange-100">
+    <Container class="py-(--spacing-section)">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-2xl font-extrabold text-slate-900 mb-2 text-center">Veelgestelde vragen</h2>
+        <p class="text-slate-500 text-sm text-center mb-8">Alles wat je wilt weten over het theorie-examen en rijbewijs B</p>
+        <div class="grid gap-3 sm:grid-cols-2">
+          {faq.map((item) => (
+            <details class="group rounded-lg border border-orange-100 bg-white shadow-sm">
+              <summary class="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer font-semibold text-slate-800 text-sm list-none select-none">
+                {item.q}
+                <svg class="shrink-0 text-red-500 group-open:rotate-180 transition-transform" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+              </summary>
+              <div class="px-5 pb-4 text-sm text-slate-600 leading-relaxed border-t border-orange-50 pt-3">{item.a}</div>
+            </details>
           ))}
         </div>
       </div>
     </Container>
   </section>
 
-  <!-- Stats -->
-  <section class="border-y border-slate-200 bg-slate-50">
-    <Container class="grid grid-cols-3 gap-4 py-8 text-center">
-      {stats.map((s) => (
-        <div>
-          <div class="text-2xl font-extrabold text-brand-700 sm:text-3xl">{s.value}</div>
-          <div class="mt-1 text-sm text-slate-600">{s.label}</div>
-        </div>
-      ))}
+  <!-- CTA BAND -->
+  <section class="bg-gray-900">
+    <Container class="py-16 text-center">
+      <h2 class="text-3xl font-black text-white mb-3 tracking-tight">
+        Klaar voor je <span class="text-red-400">rijbewijs</span>?
+      </h2>
+      <p class="text-gray-400 mb-8 text-base max-w-lg mx-auto">Lees gratis onze theorie-artikelen en ga goed voorbereid naar het CBR. Haal je rijbewijs vandaag nog!</p>
+      <a href="/blog/" class="inline-flex items-center gap-2 rounded-lg bg-red-600 px-8 py-4 text-sm font-bold text-white hover:bg-red-700 transition-colors shadow-lg shadow-red-900/40">
+        Begin nu gratis <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
     </Container>
   </section>
-
-  <!-- Featured topics -->
-  <section>
-    <Container class="py-(--spacing-section)">
-      <h2 class="text-3xl font-extrabold tracking-tight text-slate-900">Waar wil je mee oefenen?</h2>
-      <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {topics.map((t) => (
-          <a href={t.href} class="group flex flex-col rounded-2xl border border-slate-200 bg-white p-6 transition hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-lg">
-            <h3 class="text-lg font-bold text-slate-900 group-hover:text-brand-700">{t.title}</h3>
-            <p class="mt-2 flex-1 text-sm text-slate-600">{t.desc}</p>
-            <span class="mt-4 text-sm font-semibold text-brand-700">{t.cta} →</span>
-          </a>
-        ))}
-      </div>
-    </Container>
-  </section>
-
-  <!-- CTA band -->
-  <section class="bg-brand-700">
-    <Container class="flex flex-col items-center justify-between gap-5 py-12 text-center sm:flex-row sm:text-left">
-      <div>
-        <h2 class="text-2xl font-extrabold text-white">Klaar om te oefenen?</h2>
-        <p class="mt-1 text-brand-50">Begin nu gratis met de verkeersbordenquiz — 20 vragen.</p>
-      </div>
-      <a href="/verkeersborden-oefenen/" class="inline-flex shrink-0 items-center rounded-xl bg-white px-6 py-3 font-semibold text-brand-700 transition hover:bg-brand-50">Start de quiz</a>
-    </Container>
-  </section>
-
-  <!-- Latest from the blog -->
-  {recent.length > 0 && (
-    <section>
-      <Container class="py-(--spacing-section)">
-        <div class="flex items-end justify-between">
-          <h2 class="text-3xl font-extrabold tracking-tight text-slate-900">Laatste uit de blog</h2>
-          <a href="/blog/" class="text-sm font-semibold text-brand-700 hover:underline">Alle artikelen →</a>
-        </div>
-        <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {recent.map((p, i) => <BlogPostCard post={p} eager={i === 0} />)}
-        </div>
-      </Container>
-    </section>
-  )}
 </BaseLayout>

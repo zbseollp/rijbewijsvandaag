@@ -1,0 +1,52 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Container from "@components/Container.astro";
+import { SITE } from "@lib/site";
+
+const stappen = [
+  { nr: "1", title: "Inschrijven bij een rijschool", desc: "Kies een erkende rijschool en maak een afspraak voor een proefles." },
+  { nr: "2", title: "Theorie leren", desc: "Leer de verkeersregels, borden en gevaarherkenning. Gebruik onze gratis artikelen als hulp." },
+  { nr: "3", title: "Theorie-examen CBR", desc: "Boek je examen via het CBR. Je hebt minimaal 17 jaar nodig. Kosten: €33,60." },
+  { nr: "4", title: "Rijlessen volgen", desc: "Na je theorie-examen kun je praktijklessen volgen bij je rijschool." },
+  { nr: "5", title: "Praktijkexamen CBR", desc: "Het rijexamen duurt ca. 55 minuten en kost €130,25 (2026)." },
+  { nr: "6", title: "Rijbewijs ophalen", desc: "Geslaagd? Je rijbewijs wordt opgestuurd naar je thuisadres." },
+];
+---
+<BaseLayout
+  title={`Rijbewijs halen in 2026 — stappenplan | ${SITE.name}`}
+  description="Hoe haal je je rijbewijs? Van rijlessen en theorie-examen tot praktijkexamen: een compleet stappenplan voor 2026."
+>
+  <section class="bg-[linear-gradient(180deg,var(--color-brand-50)_0%,#fff_70%)]">
+    <Container class="py-(--spacing-section)">
+      <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">Rijbewijs halen</h1>
+      <p class="mt-4 max-w-2xl text-lg text-slate-600">
+        Een rijbewijs halen bestaat uit meerdere stappen. Van je eerste rijles tot aan het praktijkexamen — dit is het complete stappenplan voor 2026.
+      </p>
+    </Container>
+  </section>
+
+  <Container class="py-(--spacing-section)">
+    <div class="mx-auto max-w-3xl">
+      <ol class="space-y-6">
+        {stappen.map((s) => (
+          <li class="flex gap-5 rounded-2xl border border-slate-200 bg-white p-6">
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-600 text-sm font-extrabold text-white">{s.nr}</span>
+            <div>
+              <h2 class="text-lg font-bold text-slate-900">{s.title}</h2>
+              <p class="mt-1 text-slate-600">{s.desc}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <div class="mt-12 rounded-2xl bg-brand-50 border border-brand-200 p-8">
+        <h2 class="text-xl font-bold text-brand-900">Kosten rijbewijs 2026</h2>
+        <ul class="mt-4 space-y-2 text-slate-700">
+          <li class="flex justify-between border-b border-brand-100 pb-2"><span>Theorie-examen CBR</span><strong>€33,60</strong></li>
+          <li class="flex justify-between border-b border-brand-100 pb-2"><span>Praktijkexamen CBR</span><strong>€130,25</strong></li>
+          <li class="flex justify-between"><span>Rijlessen (gem. 30-40 lessen)</span><strong>€1.500 – €2.500</strong></li>
+        </ul>
+      </div>
+    </div>
+  </Container>
+</BaseLayout>

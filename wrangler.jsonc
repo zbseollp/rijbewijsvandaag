@@ -1,4 +1,4 @@
-{
+﻿{
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "rijbewijsvandaag",
   "compatibility_date": "2025-01-01",
@@ -6,5 +6,10 @@
     "directory": "./dist",
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page"
-  }
+  },
+  "workers_dev": true,
+  "routes": [
+    { "pattern": "rijbewijsvandaag.nl", "custom_domain": true },
+    { "pattern": "www.rijbewijsvandaag.nl", "custom_domain": true }
+  ]
 }

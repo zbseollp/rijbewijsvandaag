@@ -1,8 +1,0 @@
-{
-  "$schema": "https://astropayload.dev/schemas/config.json",
-  "version": 1,
-  "tenantSlug": "rijbewijsvandaag",
-  "modules": ["blog"],
-  "blogContentPath": "src/content/blog",
-  "notes": "Blog content is synced from Payload on publish (CI)."
-}

@@ -82,7 +82,9 @@ export function readingMinutes(text?: string): number {
 }
 
 export function postDescription(p: Post): string {
-  return p.data.metaDescription || p.data.description || p.data.excerpt || "";
+  const raw = p.data.metaDescription || p.data.description || p.data.excerpt || "";
+  if (raw.trimStart().startsWith("/*")) return "";
+  return raw;
 }
 
 export function formatDate(d: Date): string {
